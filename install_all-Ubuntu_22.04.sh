@@ -4,19 +4,9 @@ echo "[+] Retrieving submodules"
 git submodule update --init --recursive
 
 echo "[+] Installing Python3 requirements"
-sudo python3 -m pip install --upgrade pip
-sudo python3 -m pip install -r requirements.txt
+sudo apt install -y python3-pip
 
 echo "[+] Installing GNU Radio dependencies"
-installedgnuradio_version=$(dpkg -s gnuradio|egrep -i "Version: 3.10(.*)")
-
-install_latest_gnuradio() {
-	sudo add-apt-repository ppa:gnuradio/gnuradio-releases
-        sudo apt-get update
-        gnuradioversion=$(sudo apt policy gnuradio|egrep -i "3.10(.*) 500"|sed 's/     //'|sed 's/ 500//')
-        sudo apt-get install gnuradio=$gnuradioversion # forcing GNU Radio 3.10 installation
-}
-
 install_antsdr_uhd() {
 	sudo apt-get install autoconf automake build-essential ccache cmake cpufrequtils doxygen ethtool \
 	g++ git inetutils-tools libboost-all-dev libncurses5 libncurses5-dev libusb-1.0-0 libusb-1.0-0-dev \
@@ -46,10 +36,9 @@ then
 	done
 fi
 
-gnuradioversion=$(sudo apt policy gnuradio|egrep -i "3.10(.*) 500"|sed 's/     //'|sed 's/ 500//')
-sudo apt-get install gnuradio=$gnuradioversion # forcing GNU Radio 3.10 installation
+sudo apt-get install gnuradio gnuradio-dev -y
 
-sudo apt install git cmake g++ libboost-all-dev libgmp-dev swig python3-numpy \
+sudo apt install -y git cmake g++ libboost-all-dev libgmp-dev swig python3-numpy \
 python3-mako python3-sphinx python3-lxml doxygen libfftw3-dev \
 libsdl1.2-dev libgsl-dev libqwt-qt5-dev libqt5opengl5-dev python3-pyqt5 \
 liblog4cpp5-dev libzmq3-dev python3-yaml python3-click python3-click-plugins \
@@ -66,11 +55,10 @@ while true; do
         esac
 done
 
-sudo pip3 install pyserial
+sudo pip3 install pyserial --break-system-packages
 
 echo "[+] Installing osmocore"
-sudo apt-get install build-essential libtool libtalloc-dev libsctp-dev shtool autoconf automake git-core pkg-config make gcc gnutls-dev libusb-1.0-0-dev libmnl-dev
-git clone https://gitea.osmocom.org/osmocom/libosmocore.git
+sudo apt -y install build-essential libosmocore libtool libtalloc-dev libsctp-dev shtool autoconf automake git-core pkg-config make gcc gnutls-dev libusb-1.0-0-dev libmnl-dev
 cd libosmocore/
 autoreconf -i
 ./configure
@@ -84,7 +72,7 @@ mkdir thirdparty
 cd thirdparty
 REMPATH=`pwd`
 #sudo apt install gr-osmosdr
-git clone https://github.com/osmocom/gr-osmosdr
+git clone https://github.com/PentHertz/gr-osmosdr.git
 cd gr-osmosdr
 mkdir build
 cd build
@@ -93,7 +81,7 @@ make -j$(nproc)
 sudo make install
 cd $REMPATH
 echo "[+] Downloading gr-gsm for Python3 and GNU Radio 3.10"
-git clone https://github.com/bkerler/gr-gsm
+git clone https://github.com/FlUxIuS/gr-gsm.git
 echo "[+] Building and installing gr-gsm for GNU Radio 3.10"
 cd gr-gsm
 mkdir build
@@ -103,7 +91,7 @@ make -j$(nproc)
 sudo make install
 cd ../../
 echo "[+] Installing SDK tools"
-sudo apt install openjdk-17-jdk
+sudo apt install -y openjdk-25-jdk
 wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
 unzip platform-tools-latest-linux.zip
 sudo mkdir -p /opt/Android
