@@ -35,20 +35,20 @@ class ServiceMode(ADBshell):
         for s in string.split(b'\r\n'):
             if b'LTE' in s:
                 if b'Band' in s:
-                    band = re.match(b'^.*Band?:?\s?(\d+)', s).group(1)
+                    band = re.match(rb'^.*Band?:?\s?(\d+)', s).group(1)
                 elif b'BAND' in s and b'BW' in s:
-                    band, bandwidth = re.match(b'^.*BAND:?\s?(\d+)\sBW:?\s?([\d+\w]+)?\s?\_$', s).groups()
+                    band, bandwidth = re.match(rb'^.*BAND:?\s?(\d+)\sBW:?\s?([\d+\w]+)?\s?\_$', s).groups()
             if b'MCC-MNC' in s:
                 if b'TAC' in s:
-                    plmn, tac  = re.match(b'^.*MCC-MNC?\s?:?\s?([\d\-]+)\,?\s?TAC:?\s?(\d+)?\s?\_$', s).groups()
+                    plmn, tac  = re.match(rb'^.*MCC-MNC?\s?:?\s?([\d\-]+)\,?\s?TAC:?\s?(\d+)?\s?\_$', s).groups()
                 elif b'MeG':
-                    plmn = re.match(b'^.*MCC-MNC?\s?:?\s?([\d\-\s]+)', s).group(1)
+                    plmn = re.match(rb'^.*MCC-MNC?\s?:?\s?([\d\-\s]+)', s).group(1)
             if b'Earfcn_dl:' in s:
-                earfcn, pci = re.match(b'^.*Earfcn_dl:?\s?(\d+),?\s?PCI:?\s?(\d+)?\s?\_', s).groups()
+                earfcn, pci = re.match(rb'^.*Earfcn_dl:?\s?(\d+),?\s?PCI:?\s?(\d+)?\s?\_', s).groups()
             if b'LTE DL BW' in s:
-                bandwidth = re.match(b'^.*BW?\s?:?\s?([\d\w]+)', s).group(1)
+                bandwidth = re.match(rb'^.*BW?\s?:?\s?([\d\w]+)', s).group(1)
             if tac is None and b'TAC' in s:
-                tac = re.match(b'^.*TAC?\s?:?\s?([\d]+)', s).group(1)
+                tac = re.match(rb'^.*TAC?\s?:?\s?([\d]+)', s).group(1)
         if None not in [plmn, tac, earfcn, band, bandwidth, pci]:
             tac = tac.decode('utf-8')
             plmn = plmn.decode('utf-8').replace(' ','')
@@ -83,16 +83,16 @@ class ServiceMode(ADBshell):
         cell = {}
         for s in string.split(b'\n'):
             if b'Band' in s and b'BW' in s:
-                band, bandwidth = re.match(b'^.*Band:?\s?(\d+)\sBW:?\s?([\d+\w]+)?\s?\_$', s).groups()
-                bandwidth = bandwidth.replace('MHz', '')
-            if 'Registered' in s:
-                plmn = re.match(b'^.*PLMN?\s?:?\s?([\d\-\s]+)', s).group(1).replace(' ', '')
+                band, bandwidth = re.match(rb'^.*Band:?\s?(\d+)\sBW:?\s?([\d+\w]+)?\s?\_$', s).groups()
+                bandwidth = bandwidth.replace(b'MHz', b'')
+            if b'Registered' in s:
+                plmn = re.match(rb'^.*PLMN?\s?:?\s?([\d\-\s]+)', s).group(1).replace(b' ', b'')
             if b'DL & UL Frequency' in s:
-                earfcn = re.match(b'^.*Frequency:?\s?([\d+\w]+)', s).group(1)
+                earfcn = re.match(rb'^.*Frequency:?\s?([\d+\w]+)', s).group(1)
             if tac is None and b'TAC' in s:
-                tac = re.match(b'^.*TAC?\s?:?\s?([\d]+)', s).group(1)
+                tac = re.match(rb'^.*TAC?\s?:?\s?([\d]+)', s).group(1)
             if b'CellID' in s and b'PCI' in s:
-                cid, pci = re.match(b'^.*ServingCellID:?\s?([\w\d]+)PCI:?\s?([\w\d]+)?\s?\_$', s).groups()
+                cid, pci = re.match(rb'^.*ServingCellID:?\s?([\w\d]+)PCI:?\s?([\w\d]+)?\s?\_$', s).groups()
         if None not in [plmn, tac, earfcn, band, bandwidth]:
             tac = tac.decode('utf-8')
             plmn = plmn.decode('utf-8').replace(' ','')
@@ -121,12 +121,12 @@ class ServiceMode(ADBshell):
         cell = {}
         for s in string.split(b'\n'):
             if b'MCC' in s:
-                mcc, mnc = re.match(b'^.*MCC?\s?:?\s?(\d+)?\s?MNC?\s?:?\s?(\d+)?\s?\_$', s).groups()
+                mcc, mnc = re.match(rb'^.*MCC?\s?:?\s?(\d+)?\s?MNC?\s?:?\s?(\d+)?\s?\_$', s).groups()
                 plmn = mcc+mnc
             if b'CellId' in s:
-                cid = re.match(b'^.*CellId?\s?:?\s?([\w\d]+)', s).group(1)
+                cid = re.match(rb'^.*CellId?\s?:?\s?([\w\d]+)', s).group(1)
             if b'uarfcn:' in s:
-                rx = re.match(b'^.*uarfcn:?\s?(\d+)', s).group(1)
+                rx = re.match(rb'^.*uarfcn:?\s?(\d+)', s).group(1)
         if None not in [rx, cid, plmn]:
             cid = cid.decode('utf-8').replace('_','')
             plmn = plmn.decode("utf-8")
@@ -154,15 +154,15 @@ class ServiceMode(ADBshell):
         cell = {}
         for s in string.split(b'\r\n'):
             if b'Band' in s:
-                band = re.match(b'^.*Band?:?\s?(\d+)', s).group(1)
+                band = re.match(rb'^.*Band?:?\s?(\d+)', s).group(1)
             if b'Reg PLMN' in s:
-                plmn = re.match(b'^.*Reg PLMN?\s?([\d\-]+)', s).group(1)
+                plmn = re.match(rb'^.*Reg PLMN?\s?([\d\-]+)', s).group(1)
             if b'CELL_ID' in s:
-                cid = re.match(b'^.*CELL_ID:?\s?(\S+)', s).group(1)
+                cid = re.match(rb'^.*CELL_ID:?\s?(\S+)', s).group(1)
             if b'CH DL:' in s:
-                tx = re.match(b'^.*CH DL:?\s?(\d+)', s).group(1)
+                tx = re.match(rb'^.*CH DL:?\s?(\d+)', s).group(1)
             if b', UL:' in s:
-                rx = re.match(b'^.*\,\sUL:?\s?(\d+)', s).group(1)
+                rx = re.match(rb'^.*\,\sUL:?\s?(\d+)', s).group(1)
         if None not in [tx, rx, cid, plmn, band]:
             cid = cid.decode('utf-8').replace('_','')
             plmn = plmn.decode("utf-8").replace(' ', '')
@@ -190,20 +190,20 @@ class ServiceMode(ADBshell):
         cell = {}
         for s in string.split(b'\r\n'):
             if b'Band' in s:
-                band = re.match(b'^.*Band?:?\s?(\d+)', s).group(1)
+                band = re.match(rb'^.*Band?:?\s?(\d+)', s).group(1)
             if b'PLMN:' in s:
-                plmn = re.match(b'^.*PLMN:?\s?([\d\-]+)?\s?\_$', s).group(1)
+                plmn = re.match(rb'^.*PLMN:?\s?([\d\-]+)?\s?\_$', s).group(1)
             elif b'MCC-MNC :' in s:
                 try:
-                  plmn = re.match(b'^.*MCC-MNC\s:?\s?([\d\-\s]+)?\s?\_$', s).group(1)
+                  plmn = re.match(rb'^.*MCC-MNC\s:?\s?([\d\-\s]+)?\s?\_$', s).group(1)
                 except:
                   plmn = None
             if b'CID:' in s:
-                cid = re.match(b'^.*CID:?\s?(\S+)?\s?_$', s).group(1)
+                cid = re.match(rb'^.*CID:?\s?(\S+)?\s?_$', s).group(1)
             if b' TX:' in s:
-                tx = re.match(b'^.*TX:?\s?(\d+)', s).group(1)
+                tx = re.match(rb'^.*TX:?\s?(\d+)', s).group(1)
             if b' RX:' in s:
-                rx = re.match(b'^.*RX:?\s?(\d+)', s).group(1)
+                rx = re.match(rb'^.*RX:?\s?(\d+)', s).group(1)
         if None not in [tx, rx, cid, plmn, band]:
             cid = cid.decode('utf-8')
             plmn = plmn.decode("utf-8").replace(' ', '')
@@ -230,12 +230,12 @@ class ServiceMode(ADBshell):
         cell = {}
         for s in string.split(b'\n'):
             if b'MCC' in s:
-                mcc, mnc = re.match(b'^.*MCC?\s?:?\s?(\d+)?\s?MNC?\s?:?\s?(\d+)?\s?\_$', s).groups()
+                mcc, mnc = re.match(rb'^.*MCC?\s?:?\s?(\d+)?\s?MNC?\s?:?\s?(\d+)?\s?\_$', s).groups()
                 plmn = mcc+mnc
             if b'CellId' in s:
-                cid = re.match(b'^.*CellId?\s?:?\s?([\w\d]+)', s).group(1)
+                cid = re.match(rb'^.*CellId?\s?:?\s?([\w\d]+)', s).group(1)
             if b'arfcn' in s:
-                arfcn = re.match(b'^.*arfcn?\s?:?\s?(\d+)', s).group(1)
+                arfcn = re.match(rb'^.*arfcn?\s?:?\s?(\d+)', s).group(1)
         if None not in [arfcn, cid, plmn]:
             cid = cid.decode('utf-8')
             plmn = plmn.decode("utf-8").replace(' ', '')
@@ -261,13 +261,13 @@ class ServiceMode(ADBshell):
         cell = {}
         for s in string.split(b'\r\n'):
             if b'PLMN:' in s:
-                plmn = re.match(b'^.*PLMN:?\s?([\d\-]+)?\s?\_$', s).group(1)
+                plmn = re.match(rb'^.*PLMN:?\s?([\d\-]+)?\s?\_$', s).group(1)
             elif b'MCC-MNC :' in s:
-                plmn = re.match(b'^.*MCC-MNC\s:?\s?([\d\-\s]+)?\s?\_$', s).group(1)
+                plmn = re.match(rb'^.*MCC-MNC\s:?\s?([\d\-\s]+)?\s?\_$', s).group(1)
             if b'CID:' in s:
-                cid = re.match(b'^.*CID:?\s?(\S+)?\s?_$', s).group(1)
+                cid = re.match(rb'^.*CID:?\s?(\S+)?\s?_$', s).group(1)
             if b' Tra:' in s:
-                arfcn = re.match(b'^.*Tra:?\s?(\d+)', s).group(1)
+                arfcn = re.match(rb'^.*Tra:?\s?(\d+)', s).group(1)
         if None not in [arfcn, cid, plmn]:
             cid = cid.decode('utf-8')
             plmn = plmn.decode("utf-8").replace(' ', '')
