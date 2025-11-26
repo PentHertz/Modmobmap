@@ -59,7 +59,7 @@ Here are the following requirements:
 Ubuntu installation
 ---------------------
 
-A `install_all-Ubuntu_22.04.sh` script installing all dependencies for all engines is available in the root directory.
+A `install_all-Ubuntu_24.04.sh` script installing all dependencies for all engines is available in the root directory.
 
 For other distributions, please adapt this script base on listed dependencies.
 
