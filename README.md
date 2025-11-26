@@ -4,7 +4,7 @@
 
 **Mobile Network Intelligence & Mapping Tool**
 
-*Retrieve comprehensive information on 2G/3G/4G/5G cellular networks with minimal equipment*
+*Retrieve comprehensive information on 2G/3G/4G/and soon 5G cellular networks with minimal equipment*
 
 [![Python](https://img.shields.io/badge/Python-3.x-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-BEER--WARE-yellow.svg)](LICENSE)
