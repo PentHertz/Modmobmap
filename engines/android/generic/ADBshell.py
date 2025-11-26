@@ -90,7 +90,7 @@ class ADBshell(object):
         process = self.run_adbcmdshell('getprop rild.libargs')
         devfile = process.stdout.readline().split(b'/dev/')
         if len(devfile) >= 2:
-            m = re.match(b'([\d\w]+)', devfile[1])
+            m = re.match(rb'([\d\w]+)', devfile[1])
             if m is not None:
                 devfile = b'/dev/' + devfile[1].replace(b'\r\n', b'')
             else:
