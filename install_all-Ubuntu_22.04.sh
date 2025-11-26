@@ -58,7 +58,7 @@ done
 sudo pip3 install pyserial --break-system-packages
 
 echo "[+] Installing osmocore"
-sudo apt -y install build-essential libosmocore libtool libtalloc-dev libsctp-dev shtool autoconf automake git-core pkg-config make gcc gnutls-dev libusb-1.0-0-dev libmnl-dev
+sudo apt -y install build-essential libosmocore libosmocore-dev libtool libtalloc-dev libsctp-dev shtool autoconf automake git-core pkg-config make gcc gnutls-dev libusb-1.0-0-dev libmnl-dev
 cd libosmocore/
 autoreconf -i
 ./configure
