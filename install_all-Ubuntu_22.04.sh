@@ -24,18 +24,6 @@ install_antsdr_uhd() {
 	cd ../../
 }
 
-if [ -z "$installedgnuradio_version" ]
-then
-	while true; do
-    	read -p "GNU Radio 3.10 doesn't appear to be installed, do you wish to install this program? " yn
-    	case $yn in
-        	[Yy]* ) install_latest_gnuradio; break;;
-        	[Nn]* ) exit;;
-        	* ) echo "Please answer [Y]yes or [N]no.";;
-    	esac
-	done
-fi
-
 sudo apt-get install gnuradio gnuradio-dev -y
 
 sudo apt install -y git cmake g++ libboost-all-dev libgmp-dev swig python3-numpy \
@@ -59,16 +47,6 @@ sudo pip3 install pyserial --break-system-packages
 
 echo "[+] Installing osmocore"
 sudo apt -y install build-essential libosmocore libosmocore-dev libtool libtalloc-dev libsctp-dev shtool autoconf automake git-core pkg-config make gcc gnutls-dev libusb-1.0-0-dev libmnl-dev
-cd libosmocore/
-autoreconf -i
-./configure
-make
-sudo make install
-sudo ldconfig -i
-cd ..
-
-echo "[+] Installing gr-osmosdr from source"
-mkdir thirdparty
 cd thirdparty
 REMPATH=`pwd`
 #sudo apt install gr-osmosdr
@@ -117,6 +95,7 @@ sudo apt-get install soapysdr-module-rfspace
 sudo apt-get install airspy soapysdr-module-airspy
 echo "[+] Installaing srsLTE for Modmobmap"
 cd $REMPATH
+ls 
 cd srsLTE
 mkdir build
 cd build
