@@ -1,3 +1,4 @@
-[submodule "thirdparty/srsLTE"]
-	path = thirdparty/srsLTE
-	url = https://github.com/PentHertz/srsLTE.git
+[submodule "thirdparty/srsRAN"]
+        path = thirdparty/srsLTE
+        url = https://github.com/FlUxIuS/srsRAN_4G.git
+        branch = modmobmap
