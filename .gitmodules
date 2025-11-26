@@ -1,4 +1,5 @@
 [submodule "thirdparty/srsRAN"]
         path = thirdparty/srsLTE
         url = https://github.com/FlUxIuS/srsRAN_4G.git
-        branch = modmobmap
+	branch = modmobmap
+	update = merge
