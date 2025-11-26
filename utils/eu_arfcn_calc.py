@@ -23,7 +23,7 @@ table_earfcn = {
             'DL_range' : (0,599),
             'FUL_Low' : 1920,
             'NUL_Offset' : 18000,
-            'UP_range' : (1800,18599),
+            'UP_range' : (18000,18599),
     },
     2 : {   'FDL_Low' : 1930,
             'NDL_Offset' : 600,
