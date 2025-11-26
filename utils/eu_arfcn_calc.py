@@ -463,10 +463,15 @@ def earfcn2freq(band, dl_earfcn=None, ul_earfcn=None):
         out: tuple (float downlink_freq, float uplink_freq)
     '''
     NDL_Offset = table_earfcn[band]['NDL_Offset']
-    NUL_Offset = table_earfcn[band]['NUL_Offset']
-    duplex_spacing = abs(table_earfcn[band]['FDL_Low']-table_earfcn[band]['FUL_Low'])
+    if table_earfcn[band].__contains__('NUL_Offset'):
+        NUL_Offset = table_earfcn[band]['NUL_Offset']
+    if table_earfcn[band].__contains__('FUL_Low'):
+        ful_low = table_earfcn[band]['FUL_Low']
+    else:
+        ful_low = 0
+    duplex_spacing = abs(table_earfcn[band]['FDL_Low']-ful_low)
     FDL_Low = table_earfcn[band]['FDL_Low']
-    FUL_Low = table_earfcn[band]['FUL_Low']
+    FUL_Low = ful_low
     downlink_freq = uplink_freq = None
     if dl_earfcn is not None:
         downlink_freq = FDL_Low + 0.1 * (dl_earfcn-NDL_Offset)
@@ -476,6 +481,10 @@ def earfcn2freq(band, dl_earfcn=None, ul_earfcn=None):
         uplink_freq = downlink_freq - duplex_spacing
     elif downlink_freq is None and uplink_freq is not None:
         downlink_freq = downlink_freq + duplex_spacing
+
+    if FUL_Low == 0:
+        uplink_freq = 0
+
     return (downlink_freq, uplink_freq)
 
 if __name__ == "__main__":
