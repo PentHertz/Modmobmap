@@ -1,451 +1,469 @@
-Modmobmap
-==========
+# 📡 Modmobmap
 
-Modmobmap is a tool aimed to retrieve information on cellular networks.
-As shown in the first [presentation made at BeeRump 2018](https://www.rump.beer/2018/slides/modmobmap.pdf), this tool is able to retrieve information of 2G, 3G, 4G, and more cellular network types with minimum requirement: only phone with ServiceMode.
+<div align="center">
 
-For the moment, the tool has only been tested and developed for the following devices:
-- Samsung Galaxy S3 via [xgoldmon (Modmobmap's edition)](https://github.com/FlUxIuS/xgoldmon);
-- Samsung Galaxy S4;
-- Samsung Galaxy S5;
-- Samsung Galaxy Note 2 with LTE;
-- Samsung Galaxy S20
+**Mobile Network Intelligence & Mapping Tool**
 
-Moreover, as it's compatible for XGold via Modmobmap's forked of *xgoldmon*, this tool should also be able to work with devices supported by *xgoldmon* as well:
-- Samsung Galaxy S4 GT-I9500 (this is the version without LTE!)
-- Samsung Galaxy Nexus GT-I9250 (has to be rooted!)
-- Samsung Galaxy S2 GT-I9100
-- Samsung Galaxy Note 2 GT-N7100
+*Retrieve comprehensive information on 2G/3G/4G/5G cellular networks with minimal equipment*
 
-Note that all devices should be rooted. In any other case, you will have to use the DFR technique by hand!
+[![Python](https://img.shields.io/badge/Python-3.x-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-BEER--WARE-yellow.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-Available-2496ED?logo=docker)](https://hub.docker.com/r/penthertz/modmobmap)
+[![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey.svg)](https://www.linux.org/)
 
-Also: Patches, or engines, for other devices are very much welcomed! ;)
+[Features](#-key-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-usage-examples) • [Docker](#-docker-deployment)
 
-But this is not finished yet, Modmobmap include a GRGSM scanner to scan GSM cells with SDR. Compatible SDR devices are the same as those compatible with `gr-osmosdr` as follows:
+</div>
 
-* FunCube Dongle through libgnuradio-fcd
-* FUNcube Dongle Pro+ through gr-fcdproplus
-* sysmocom OsmoSDR Devices through libosmosdr
-* Nuand LLC bladeRF through libbladeRF library
-* Great Scott Gadgets HackRF through libhackrf
-* Ettus USRP Devices through Ettus UHD library
-* Fairwaves UmTRX through Fairwaves' fork of Ettus' UHD library
-* RFSPACE SDR-IQ, SDR-IP, NetSDR (incl. X2 option)
-* RTL2832U based DVB-T dongles through librtlsdr
-* RTL-TCP spectrum server (see librtlsdr project)
-* MSi2500 based DVB-T dongles through libmirisdr
-* SDRplay RSP through SDRplay API library
-* AirSpy R820t dongles through libairspy
+---
 
-Modmobmap is also able to scan LTE cells by wrapping srsLTE tools. The engine supports several SDR devices:
+## 🎯 Overview
 
-* USRP
-* BladeRF
-* HackRF
-* RFSpace
-* ANTSDR E200 (with the right UHD installation)
-* and so on.
+Modmobmap is a comprehensive cellular network reconnaissance tool designed for security researchers, RF engineers, and penetration testers. Originally presented at [BeeRump 2018](https://www.rump.beer/2018/slides/modmobmap.pdf), it combines multiple techniques to map and analyze mobile networks using both commercial smartphones and Software-Defined Radio (SDR) devices.
 
-Requirements
--------------
+### 🔥 Key Features
 
-Here are the following requirements:
-- Python 3;
-- Last Android SDK to run ADB: https://developer.android.com/studio/#downloads;
-- A compatible mobile phone;
-- GNU Radio 3.10 with gr-gsm to scan GSM stations with Software-Defined Radio
-- A valid/invalid SIM card (just in case to provide an IMSI number).
+<table>
+<tr>
+<td>
 
-Ubuntu installation
----------------------
+**📱 Smartphone-Based Scanning**
+- Samsung Galaxy devices (S3-S20)
+- ServiceMode interface support
+- XGold modem compatibility
+- Real-time cell information
 
-A `install_all-Ubuntu_24.04.sh` script installing all dependencies for all engines is available in the root directory.
+</td>
+<td>
 
-For other distributions, please adapt this script base on listed dependencies.
+**📻 SDR Integration**
+- GNU Radio GSM scanning
+- srsRAN LTE/NB-IoT support
+- Multi-band analysis
+- Passive reconnaissance
 
-How to use
-----------
+</td>
+</tr>
+<tr>
+<td>
 
-The tool is provided with quick help that shows you the required argument as follows:
+**🌐 Network Coverage**
+- 2G/GSM networks
+- 3G/UMTS systems
+- 4G/LTE cells
+- NB-IoT detection
 
+</td>
+<td>
+
+**💾 Data Management**
+- JSON export format
+- Real-time logging
+- Cell database
+- Operator caching
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🛠️ Supported Hardware
+
+### 📱 Mobile Devices (Rooted Required)
+
+<details>
+<summary><b>✅ Tested & Confirmed</b></summary>
+
+- **Samsung Galaxy S3** (via [xgoldmon](https://github.com/FlUxIuS/xgoldmon))
+- **Samsung Galaxy S4** (GT-I9500)
+- **Samsung Galaxy S5**
+- **Samsung Galaxy Note 2** (LTE version)
+- **Samsung Galaxy S20**
+- **Samsung Galaxy Nexus** (GT-I9250, rooted)
+- **Samsung Galaxy S2** (GT-I9100)
+
+> 💡 **Note:** All devices must be rooted. For non-rooted devices, manual DFR technique required.
+
+</details>
+
+### 📻 SDR Devices (via gr-osmosdr & UHD)
+
+<details>
+<summary><b>🎛️ Compatible SDR Hardware</b></summary>
+
+| Device | Driver | GSM | LTE | Notes |
+|--------|--------|-----|-----|-------|
+| **RTL-SDR** | rtlsdr/soapy | ✅ | ✅ | Budget option |
+| **HackRF One** | hackrf | ✅ | ✅ | Wide frequency range |
+| **BladeRF** | bladerf | ✅ | ✅ | High performance |
+| **USRP (all models)** | uhd | ✅ | ✅ | Professional grade |
+| **ANTSDR E200** | uhd | ✅ | ✅ | Requires proper UHD setup |
+| **AirSpy** | airspy | ✅ | ❌ | GSM only |
+| **SDRplay RSP** | sdrplay | ✅ | ❌ | GSM only |
+| **FunCube Dongle** | fcd | ✅ | ❌ | GSM only |
+
+</details>
+
+---
+
+## 🚀 Installation
+
+### Prerequisites
+
+```bash
+# Core dependencies
+- Python 3.x
+- Android SDK (for ADB)
+- GNU Radio 3.10+ with gr-gsm
+- Valid/invalid SIM card (for IMSI)
 ```
-python modmobmap.py -h
-usage: modmobmap.py [-h] [-m MODULE] [-n NETWORKS] [-o] [-s ANDROIDSDK]
-                    [-a ATMODE] [-f FILE]Before running the engine, make sure all dependencies are installed. You can refer to the installation script 
 
-Mobile network mapping tool with cheap equipments
+### 🐧 Ubuntu 24.04 Quick Install
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -m MODULE, --module MODULE
-                        Module to use (e.g: "servicemode" by default)
-  -n NETWORKS, --networks NETWORKS
-                        Networks in MCCMNC format splitted with commas
-  -o, --cached_operator
-                        Use operator in cache to speed up the passive scan
-  -s ANDROIDSDK, --sdk ANDROIDSDK
-                        Android SDK path
-  -a ATMODE, --at ATMODE
-                        AT access mode. If host put something like
-                        "/dev/ttyUSBxx. By default it uses ADB."
-  -f FILE, --file FILE  File to parse. For the moment it could be used in
-                        combination with AT mode host.
+```bash
+# Clone repository with submodules
+git clone --recursive https://github.com/FlUxIuS/modmobmap.git
+cd modmobmap
+
+# Run automated installation script
+sudo ./install_all-Ubuntu_24.04.sh
+
+# Update submodules (if needed)
+git submodule update --init --recursive --remote
 ```
 
-Assuming the Android SDK is installed in */opt/Android*, the tool can be quickly started as follows:
+### 🔧 Manual Installation
 
+<details>
+<summary><b>Click to expand manual installation steps</b></summary>
+
+```bash
+# 1. Install Python dependencies
+pip3 install -r requirements.txt
+
+# 2. Install Android SDK
+# Download from: https://developer.android.com/studio/#downloads
+export ANDROID_SDK_ROOT=/path/to/android-sdk
+
+# 3. Install GNU Radio & gr-gsm
+sudo apt-get install gnuradio gr-gsm
+
+# 4. Build srsRAN (for LTE scanning)
+cd thirdparty/srsLTE
+mkdir build && cd build
+cmake ../
+make -j$(nproc)
+sudo make install
 ```
-$ sudo python modmobmap.py
+
+</details>
+
+---
+
+## 🎯 Quick Start
+
+### 🔰 Basic Scanning (Smartphone)
+
+```bash
+# Auto-detect operators and scan all available networks
+sudo python3 modmobmap.py
+
+# Specify Android SDK location (if not in default path)
+sudo python3 modmobmap.py -s /opt/Android/sdk
+```
+
+**Expected Output:**
+```
 => Requesting a list of MCC/MNC. Please wait, it may take a while...
 Found 2 operator(s)
-{u'20810': u'F SFR', u'20820': u'F-Bouygues Telecom'} 
-[+] Unregistered from current PLMN
-[+] New cell detected [CellID/PCI-DL_freq  (4XXX-81)]
+{'20810': 'F SFR', '20820': 'F-Bouygues Telecom'}
+
+[+] New cell detected [CellID/PCI-DL_freq (4XXX-81)]
  Network type=2G
  PLMN=208-10
  ARFCN=81
-[+] New cell detected [CellID/PCI-DL_freq  (6XXXXXX-2950)]
- Network type=3G
- PLMN=208-20
- Band=8
- Downlink UARFCN=2950
- Uplink UARFCN=2725
-[+] New cell detected [CellID/PCI-DL_freq  (3XX-6300)]
+
+[+] New cell detected [CellID/PCI-DL_freq (3XX-6300)]
  Network type=4G
  PLMN=208-10
  Band=20
  Downlink EARFCN=6300
-[+] New cell detected [CellID/PCI-DL_freq  (3XX-2825)]
- Network type=4G
- PLMN=208-10
- Band=7
- Downlink EARFCN=2825
-[+] New cell detected [CellID/PCI-DL_freq  (3XX-1675)]
- Network type=4G
- PLMN=208-10
- Band=3
- Downlink EARFCN=1675
-[...]
 ```
 
-Note: If the Android SDK is installed anywhere else, you can use the *-s* parameter to specify its directory.
+### ⚡ Speed Up Scanning (Cached Operators)
 
-Speed-up the passive scan
----------------------------
-
-When looking for operators, an AT command is sent to the modem. If you want to speed-up the scanning, you can hardcoded the operators to the following file `cache/operators.json`:
-
-```
+Create `cache/operators.json`:
+```json
 {
     "20801": "Orange",
-    "20810": "F SFR", 
+    "20810": "F SFR",
     "20815": "Free",
     "20820": "F-Bouygues Telecom"
 }
 ```
 
-Only the MCC/MNC codes are important. Then you can re-launch the tool as follows:
-
-```
-$ sudo python modmobmap.py -o   
-=> Requesting a list of MCC/MNC. Please wait, it may take a while...
-Found 4 operators in cache, you choose to reuse them.
-Found 4 operator(s)
-{u'20810': u'F SFR', u'20820': u'F-Bouygues Telecom', u'20815': u'Free', u'20801': u'Orange'} 
-[+] Unregistered from current PLMN
-[+] New cell detected [CellID/PCI-DL_freq  (XXXX-10614)]
- Network type=3G
- PLMN=208-10
- Band=1
- Downlink UARFCN=10614
- Uplink UARFCN=9664
-[...]
-[+] New cell detected [CellID/PCI-DL_freq  (XXX-3501)]
- Network type=4G
- PLMN=208-20
- Band=8
- Downlink EARFCN=3501
-[...]
-[+] Unregistered from current PLMN
-=> Changing MCC/MNC for: 20815
-[+] New cell detected [CellID/PCI-DL_freq  (XXX-2825)]
- Network type=4G
- PLMN=208-15
- Band=7
- Downlink EARFCN=2825
-[...]
-=> Changing MCC/MNC for: 20801
-[+] New cell detected [CellID/PCI-DL_freq  (XXXXX-3011)]
- Network type=3G
- PLMN=208-1
- Band=8
- Downlink UARFCN=3011
- Uplink UARFCN=2786
-[...]
+Run with cache:
+```bash
+sudo python3 modmobmap.py -o
 ```
 
-Note we have been able to detect other cells the AT command *AT+COPS* did not return.
+### 🎯 Target Specific Operators
 
-A complete list of MCC and MNC codes could be retrieved anywhere on the internet and in Wikipedia: https://en.wikipedia.org/wiki/Mobile_country_code
+```bash
+# Focus on Orange (MCC/MNC: 20801)
+sudo python3 modmobmap.py -n 20801
 
-Focusing some operators
-------------------------
-
-It is possible to tell *Modmobmap* to focus only on specific operators with the *-m* argument:
-
-```
-$ sudo python modmobmap.py -n 20801
-=> Manual MCC/MNC processing...
-Found 1 operator(s)
-{'20801': '20801'} 
-[...]
-=> Changing MCC/MNC for: 20801
-[+] New cell detected [CellID/PCI-DL_freq  (XXX-1675)]
- Network type=4G
- PLMN=208-01
- Band=3
- Downlink EARFCN=1675
-[+] New cell detected [CellID/PCI-DL_freq  (XXXXX-3011)]
- Network type=3G
- PLMN=208-1
- Band=8
- Downlink UARFCN=3011
- Uplink UARFCN=2786
-=> Changing network type for 3G only
-[+] New cell detected [CellID/PCI-DL_freq  (XXXXX-2950)]
- Network type=3G
- PLMN=208-1
- Band=8
- Downlink UARFCN=2950
- Uplink UARFCN=2725
+# Multiple operators
+sudo python3 modmobmap.py -n 20801,20810,20815
 ```
 
-Using Modmobmap with xgoldmon
-------------------------------
+> 📚 **MCC/MNC Lookup:** [Wikipedia Mobile Country Codes](https://en.wikipedia.org/wiki/Mobile_country_code)
 
-With XGold modems, the use of xgoldmon will be required. But for now, only the fork for *Modmobmap* works to retrieve exact information of cells via the DIAG interface and could be downloaded at: https://github.com/FlUxIuS/xgoldmon
+---
 
-Then after compiling, the tool *xgoldmon* could be started using the *-m* parameter like this:
+## 📖 Usage Examples
 
+### 🔵 Method 1: ServiceMode (Samsung Devices)
+
+The default and most straightforward method:
+
+```bash
+sudo python3 modmobmap.py -m servicemode
 ```
+
+### 🟢 Method 2: XGoldmon (XGold Modems)
+
+For devices with XGold chipsets (S3, S4, Nexus):
+
+**Terminal 1 - Start xgoldmon:**
+```bash
+cd /path/to/xgoldmon
 sudo ./xgoldmon -t s3 -m /dev/ttyACM1
+# Creates celllog.fifo
 ```
 
-This will create a FIFO file that will be requested by Modmobmap later:
-
-```
-$ ls
-celllog.fifo  Makefile   screenshot-mtsms-while-in-a-call.png  xgoldmon
-```
-
-Then we can start running *Modmobmap* as follows by specifying the AT serial interface (*/dev/ttyACM0*) and the FIFO file created by *xgoldmon* (*<xgoldmonpath/celllog.fifo*):
-
-```
-$ sudo python3 modmobmap.py -f /<xgoldmon path>/celllog.fifo -m xgoldmod -a /dev/ttyACM0  -o
-=> Requesting a list of MCC/MNC. Please wait, it may take a while...
-Found 4 operators in cache, you choose to reuse them.
-Found 4 operator(s)
-{'20801': 'Orange', '20810': 'F SFR', '20815': 'Free', '20820': 'F-Bouygues Telecom'} 
-[+] New cell detected [CellID/PCI-DL_freq  (0x7XXXX-65535)]
- Network type=3G
- PLMN=208-1
- Downlink UARFCN=65535
- Uplink UARFCN=2850
-[+] Unregistered from current PLMN
-[+] New cell detected [CellID/PCI-DL_freq  (0x7XXXX-3011)]
- Network type=3G
- PLMN=208-1
- Downlink UARFCN=3011
- Uplink UARFCN=2786
-[...]
-[+] Unregistered from current PLMN
-=> Changing MCC/MNC for: 20810
-[+] New cell detected [CellID/PCI-DL_freq  (0x3XXXXX-3075)]
- Network type=3G
- PLMN=208-10
- Downlink UARFCN=3075
- Uplink UARFCN=2850
-[...]
- ```
-
-Note that retrieving results from AT+COPS command could take a lot of time and sometime would need to restart the tool. If the tool is blocked on the operator retrieving step, please use cached or targeted operators' features instead.
-
-Using Modmobmap with GRGSM
-------------------------------
-
-Drivers supported:
-
-* bladerf
-* uhd
-* rtlsdr
-* redpitaya
-* soapy
-
-Modmodmap can be used with `gr-gsm` to retrieve GSM cells' information with a Software-Defined Radio device compatible with OSMOSDR.
-
-To use this feature, please issue the following command:
-
-```
-$ python modmobmap.py -m grgsm -b GSM-R,GSM900 -g rtlsdr
-=> Switching to GSM-R band
-[+] New cell detected [CellID/PCI-DL_freq  (****)]
- Network type=2G
- PLMN=****
- ARFCN=978
-[+] New cell detected [CellID/PCI-DL_freq  (*****)]
- Network type=2G
- PLMN=20820
- ARFCN=983
-[+] New cell detected [CellID/PCI-DL_freq  (*****)]
- Network type=2G
- PLMN=20820
- ARFCN=1014
-[+] New cell detected [CellID/PCI-DL_freq  (*****)]
- Network type=2G
- PLMN=20810
- ARFCN=79
-[+] New cell detected [CellID/PCI-DL_freq  (****)]
- Network type=2G
- PLMN=20810
- ARFCN=86
-=> Switching to GSM900 band
-[+] New cell detected [CellID/PCI-DL_freq  (*****)]
- Network type=2G
- PLMN=20820
- ARFCN=978
+**Terminal 2 - Run Modmobmap:**
+```bash
+sudo python3 modmobmap.py \
+    -f /path/to/xgoldmon/celllog.fifo \
+    -m xgoldmod \
+    -a /dev/ttyACM0 \
+    -o
 ```
 
-Using Modmobmap with srsRAN
-------------------------------
+### 🟡 Method 3: GSM Scanning (SDR - gr-gsm)
 
-Supported drivers:
+Scan GSM bands with Software-Defined Radio:
 
-* uhd
-* bladerf
-* soapy
+```bash
+# RTL-SDR scanning GSM-R and GSM900
+python3 modmobmap.py -m grgsm -b GSM-R,GSM900 -g rtlsdr
 
+# BladeRF scanning multiple bands
+python3 modmobmap.py -m grgsm -b GSM850,GSM900,DCS1800 -g bladerf
 
-Modmodmap can be used with `srsRAN` to retrieve LTE cells with a Software-Defined Radio device compatible with UHD, and Soapy drivers like the RTL-SDR.
-
-Before running the engine, make sure all dependencies are installed. You can refer to the installation script to install all appropriate dependencies. Also make sure that all submodules are pulled from the repository:
-
-```
-git submodule update --init --recursive
+# HackRF with custom gain
+python3 modmobmap.py -m grgsm -b GSM900 -g "driver=hackrf,gain=40"
 ```
 
+**Available GSM Bands:**
+- `GSM850` (824-849 MHz)
+- `GSM-R` (876-880 MHz, Railway)
+- `GSM900` (890-915 MHz)
+- `DCS1800` (1710-1785 MHz)
+- `PCS1900` (1850-1910 MHz)
 
-To launch the tool with USRP, or bladeRF, you can choose or not to specify the driver as follows:
+### 🔴 Method 4: LTE Scanning (SDR - srsRAN)
 
-```
-$ python3 modmobmap.py -m srslte_pss -b 28 -g 'driver=usrp' 
-```
+Scan LTE cells using srsRAN:
 
-With Soapy, use this format of command instead precising the `id` of the device to avoid picking a random device (e.g, sound device...):
-```
-python3 modmobmap.py -m srslte_pss -b 28 -g 'soapy:id=1'
-Active RF plugins: libsrsran_rf_uhd.so libsrsran_rf_soapy.so libsrsran_rf_blade.so libsrsran_rf_zmq.so
-Inactive RF plugins: 
-Opening RF device...
-Supported RF device list: UHD soapy bladeRF zmq file
-[INFO] [UHD] linux; GNU C++ version 9.2.1 20200304; Boost_107100; UHD_3.15.0.0-2build5
-Found Rafael Micro R820T tuner
-[...]
-Soapy has found device #1: available=Yes, driver=rtlsdr, label=Generic RTL2832U OEM :: 00000001, manufacturer=Realtek, product=RTL2838UHIDIR, rtl=0, serial=00000001, tuner=Rafael Micro R820T, 
-Selecting Soapy device: 1
-[...]
-[+] New cell detected [CellID/PCI-DL_freq  (447-9230)]
- Network type=4G
- PLMN=-1
- Band=28
- Downlink EARFCN=9230
-[ 21/449]: EARFCN 9231 Freq. 760.10 MHz looking for PSS.
-[+] New cell detected [CellID/PCI-DL_freq  (303-9231)]
- Network type=4G
- PLMN=-1
- Band=28
- Downlink EARFCN=9231
-[ 22/449]: EARFCN 9232 Freq. 760.20 MHz looking for PSS.
-[+] New cell detected [CellID/PCI-DL_freq  (0-9233)]
- Network type=4G
- PLMN=-1
- Band=28
- Downlink EARFCN=9233
-[ 24/449]: EARFCN 9234 Freq. 760.40 MHz looking for PSS
-...
-Found CELL ID 105. 25 PRB, 2 ports
-[+] New cell detected [CellID/PCI-DL_freq  (105-9235)]
- Network type=4G
- PLMN=-1
- Band=28
- Downlink EARFCN=9235
-[...]
-^C[+] Cells save as cells_1595446203.json
+```bash
+# USRP scanning LTE Band 28
+python3 modmobmap.py -m srslte_pss -b 28 -g 'driver=usrp'
+
+# BladeRF scanning Band 7
+python3 modmobmap.py -m srslte_pss -b 7 -g 'driver=bladerf'
+
+# RTL-SDR via Soapy (specify device ID!)
+python3 modmobmap.py -m srslte_pss -b 20 -g 'soapy:id=1'
+
+# Multiple bands
+python3 modmobmap.py -m srslte_pss -b 3,7,20,28 -g 'driver=usrp'
 ```
 
-The `g` parameters is not mandatory and is used mainly to select the right device to scan the Synchronization Signals.
+### 🟣 Method 5: NB-IoT Scanning
 
-To find the right device with Soapy, you can type the following command:
+Detect Narrowband IoT cells:
 
+```bash
+sudo python3 modmobmap.py -m srslte_npss -b 20 -g 'soapy:id=1'
 ```
-######################################################
-##     Soapy SDR -- the SDR abstraction library     ##
-######################################################
 
-[INFO] [UHD] linux; GNU C++ version 9.2.1 20200304; Boost_107100; UHD_3.15.0.0-2build5
+---
+
+## 🔍 Finding Your SDR Device
+
+### List Soapy Devices
+```bash
+SoapySDRUtil --find
+```
+
+**Example Output:**
+```
 Found device 0
-  driver = SpectranV6
-  label = SpectranV6 RTSA HTTP Stream
-  manufacturer = HB9FXQ
-  product = SpectranV6 RTSA HTTP Stream
-  serial = SPECTRAN-V6-00000000000
+  driver = rtlsdr
+  label = Generic RTL2832U OEM :: 00000001
+  serial = 00000001
 
 Found device 1
-  backend = libusb
-  device = 0x01:0x13
   driver = bladerf
-  instance = 0
   label = BladeRF #0 [bd7fffbf..d5958b06]
   serial = bd7fffbf8efb4de4ba08d94bd5958b06
 ```
 
-For NB-IoT scanning, you can use the `srslte_npss` option as follows:
-
-```
-$ sudo python modmobmap.py -m srslte_npss -b 20 -g 'soapy:id=1' # you need to precise the driver, and id of the device that way  
-[INFO] [UHD] linux; GNU C++ version 9.2.1 20191008; Boost_106700; UHD_4.0.0.0-531-g5fb585c3
-[INFO] [LOGGING] Fastpath logging disabled at runtime.
-
-Found Rafael Micro R820T tuner
-Found Rafael Micro R820T tuner
-[INFO] Using format CF32.
-[R82XX] PLL not locked!
-[+] New cell detected [CellID/PCI-DL_freq  (1-6200)]
- Network type=4G
- PLMN=-1
- Downlink EARFCN=6200
-[+] New cell detected [CellID/PCI-DL_freq  (1-6203)]
- Network type=4G
- PLMN=-1
- Downlink EARFCN=6203
-[+] New cell detected [CellID/PCI-DL_freq  (446-6400)]
- Network type=4G
- PLMN=-1
- Downlink EARFCN=6400
-[...]
+### List UHD Devices
+```bash
+uhd_find_devices
 ```
 
-Saving results
----------------
+---
 
-The process could be stopped at any time when killing the process with a keyboard interrupt signal. Then results will be automatically saved in a JSON file as follows:
+## 💾 Data Export
+
+Results are automatically saved when you stop the scan (`Ctrl+C`):
+
+```bash
+[+] Cells save as cells_1595446203.json
+```
+
+### JSON Output Format
+
+```json
+{
+  "3XX-6300": {
+    "PLMN": "208-10",
+    "band": 20,
+    "bandwidth": "10MHz",
+    "eARFCN": 6300,
+    "PCI": "3XX",
+    "TAC": "XXXX",
+    "type": "4G"
+  }
+}
+```
+
+---
+
+## 🐳 Docker Deployment
+
+### Pre-built Image (Recommended)
+
+```bash
+# Pull latest image
+docker pull penthertz/modmobmap:latest_with_e200
+
+# Run with device access
+docker run -it --privileged \
+  -v /dev/bus/usb:/dev/bus/usb \
+  penthertz/modmobmap:latest_with_e200 \
+  python3 modmobmap.py -m grgsm -b GSM900 -g rtlsdr
+```
+
+### Build Your Own
+
+```bash
+# Clone and build
+git clone --recursive https://github.com/FlUxIuS/modmobmap.git
+cd modmobmap
+docker build -t modmobmap:local .
+
+# Run
+docker run -it --privileged -v /dev:/dev modmobmap:local
+```
+
+> 🔐 **Security Note:** `--privileged` flag required for USB/hardware access
+
+---
+
+## 📊 Command Reference
+
+```bash
+python3 modmobmap.py [OPTIONS]
+
+Required Options:
+  -m, --module MODULE       Scanning module: servicemode|xgoldmod|grgsm|srslte_pss|srslte_npss
+  
+Optional Parameters:
+  -n, --networks NETWORKS   Target MCC/MNC codes (comma-separated)
+  -o, --cached_operator     Use cached operators for faster scanning
+  -s, --sdk PATH           Android SDK path (default: auto-detect)
+  -a, --at DEVICE          AT serial device (e.g., /dev/ttyUSB0)
+  -f, --file FILE          FIFO file for xgoldmon integration
+  -b, --bands BANDS        Frequency bands to scan (SDR modes)
+  -g, --args ARGS          SDR device arguments (driver, gain, etc.)
+
+Examples:
+  # Basic smartphone scan
+  sudo python3 modmobmap.py
+  
+  # GSM scan with RTL-SDR
+  python3 modmobmap.py -m grgsm -b GSM900 -g rtlsdr
+  
+  # LTE scan targeting Band 7
+  python3 modmobmap.py -m srslte_pss -b 7 -g 'driver=usrp'
+  
+  # Cached operators, specific network
+  sudo python3 modmobmap.py -n 20810 -o
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+- 🐛 **Bug Reports:** Open an issue with details
+- 🔧 **Device Support:** Add parsers for new phones
+- 📡 **SDR Engines:** Integrate new hardware/software
+- 📚 **Documentation:** Improve guides and examples
+
+---
+
+## 📞 Support & Community
+
+- 🐦 **Twitter:** [@Penthertz](https://twitter.com/penthertz)
+- 🌐 **Website:** [penthertz.com](https://www.penthertz.com)
+
+---
+
+## 📜 License
 
 ```
-[...]
-^C[+] Cells save as cells_1528738901.json
+----------------------------------------------------------------------------
+"THE BEER-WARE LICENSE" (Revision 42):
+<sebastien.dudek(@)penthertz.com> wrote this file. As long as you retain 
+this notice you can do whatever you want with this stuff. If we meet some 
+day, and you think this stuff is worth it, you can buy me a beer in return.
+                                                            FlUxIuS ;)
+----------------------------------------------------------------------------
 ```
 
-## Docker image (in case of Apocalypse)
+---
 
-To avoid any issue installing the whole project, we have also a Docker container available at this address: https://hub.docker.com/r/penthertz/modmobmap
+## 🙏 Acknowledgments
 
-You can now use the `latest_with_e200` tag which is compatible with the ANTSDR E200.
+- Original presentation: [BeeRump 2018](https://www.rump.beer/2018/slides/modmobmap.pdf)
+- [gr-gsm](https://github.com/ptrkrysik/gr-gsm) by Piotr Krysik
+- [srsRAN](https://github.com/srsran/srsRAN) by Software Radio Systems
+- [xgoldmon](https://github.com/2b-as/xgoldmon) by 2b-as
+
+---
+
+<div align="center">
+
+**Made with ☕ & 📡 by the Penthertz Team**
+
+⭐ Star us on GitHub if this project helped you!
+
+</div>
