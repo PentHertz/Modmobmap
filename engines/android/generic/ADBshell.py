@@ -71,7 +71,7 @@ class ADBshell(object):
         adbpath = None
         if self.androidsdkpath is not None:
             if 'linux' in sys.platform.lower():
-                adbpath = self.androidsdkpath + '/platform-tools/adb'
+                adbpath = self.androidsdkpath + '/adb'
         if adbpath is None:
             raise ADBError('platform')
         commandstring = [adbpath, 'shell']
